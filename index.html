@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f65">
+  <title>Equipment Health Assessment Checklist</title>
+  <style>
+    :root{--navy:#123f65;--blue:#174f7d;--sky:#e8f3fb;--line:#cad7e3;--ink:#122033;--muted:#5d6b7a;--bg:#eef3f8;--white:#fff;--amber:#fff8dc;--danger:#a52828}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+    button,input,textarea{font:inherit} button{cursor:pointer}.container{width:min(1120px,calc(100% - 32px));margin:auto}
+    .toolbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);box-shadow:0 2px 10px #123f6515}
+    .toolbar-row{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 0}.brand{display:flex;gap:12px;align-items:center;min-width:260px}.brand-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--blue);color:#fff;font-size:22px}.brand strong{display:block;color:var(--blue)}.status{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);padding:8px 12px;font-weight:650}.btn:hover{background:#f6f9fb}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.danger{color:var(--danger)}
+    .progress{height:5px;background:#dbe5ee}.progress>div{height:100%;width:0;background:#2c85bd;transition:width .2s}
+    .hero{margin:34px 0 28px;padding:34px 38px;border-radius:24px;background:var(--navy);color:#fff;box-shadow:0 18px 54px #123f6530}.eyebrow{font-size:13px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#a9dcfa}.hero h1{margin:8px 0;font-size:clamp(29px,5vw,43px);line-height:1.12}.hero p{margin:0;color:#d7edfa;font-size:18px}
+    .card{margin:0 0 24px;overflow:hidden;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 3px 14px #123f650b}.section-head{display:flex;gap:15px;align-items:center;padding:18px 22px;background:#f8fafc;border-bottom:1px solid var(--line)}.section-no{display:grid;place-items:center;min-width:42px;height:42px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800}.section-head h2{margin:0;color:var(--navy);font-size:20px}.section-head p{margin:2px 0 0;color:var(--muted);font-size:14px}
+    .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px;padding:22px}.field label,.comments label{display:block;margin-bottom:6px;color:var(--navy);font-weight:700;font-size:14px}.field input,.comments textarea{width:100%;border:1px solid #afbfcd;border-radius:9px;padding:10px 11px;background:#fff;color:var(--ink)}.field input:focus,.comments textarea:focus{outline:3px solid #8bc8ee66;border-color:#2c85bd}.comments textarea{min-height:78px;resize:vertical}
+    .instructions{display:flex;gap:15px;padding:20px 22px;background:var(--sky)}.instructions p{margin:0}.question{padding:22px}.question+.question{border-top:1px solid #dce5ec}.q-title{display:flex;gap:12px;font-weight:700}.q-no{flex:0 0 auto;color:var(--blue)}.response{display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:16px}.choices{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}.choice input{position:absolute;opacity:0}.choice span{display:block;border:1px solid #adbdca;border-radius:9px;background:#fff;padding:9px 15px;font-weight:750}.choice input:checked+span{border-color:var(--blue);background:var(--blue);color:#fff}.choice input:focus-visible+span{outline:3px solid #8bc8ee}
+    .summary{padding:22px;display:grid;gap:24px}.summary fieldset{margin:0;border:0;padding:0}.summary legend{margin-bottom:10px;color:var(--navy);font-weight:800}.tiles{display:flex;gap:9px;flex-wrap:wrap}.check-list{display:grid;gap:10px}.check-item{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fafcfd}.check-item input{width:18px;height:18px;margin-top:3px;accent-color:var(--blue)}
+    .note{margin-bottom:24px;padding:18px 20px;border:1px solid #ebd47c;border-radius:14px;background:var(--amber)}.bottom{display:flex;justify-content:space-between;gap:12px;margin:0 0 50px;padding-top:20px;border-top:1px solid var(--line)}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:30;max-width:340px;padding:12px 16px;border-radius:10px;background:#13263b;color:#fff;box-shadow:0 8px 28px #0004;opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
+    @media(max-width:760px){.container{width:min(100% - 22px,1120px)}.toolbar-row{align-items:flex-start;flex-direction:column}.brand{min-width:0}.actions{width:100%}.actions .btn{flex:1}.hero{margin-top:20px;padding:27px 23px}.fields{grid-template-columns:1fr;padding:18px}.section-head,.question,.summary{padding-left:17px;padding-right:17px}.response{grid-template-columns:1fr}.bottom{flex-direction:column-reverse}.bottom .btn{width:100%}}
+    @media print{body{background:#fff;font-size:11pt}.no-print,.toolbar{display:none!important}.container{width:100%}.hero{margin:0 0 16px;padding:20px;box-shadow:none}.card{break-inside:avoid;box-shadow:none;margin-bottom:12px}.question{break-inside:avoid;padding:13px}.response{grid-template-columns:180px 1fr;margin-top:8px}.comments textarea{min-height:48px}.note{break-inside:avoid}.choice span{padding:5px 9px}.section-head{padding:12px 15px}.fields,.summary{padding:15px}}
+  </style>
+</head>
+<body>
+  <header class="toolbar no-print">
+    <div class="container toolbar-row">
+      <div class="brand"><div class="brand-icon" aria-hidden="true">✓</div><div><strong>Equipment Health Assessment</strong><div class="status"><span id="answered">0</span> of 18 questions answered · <span id="saveStatus">Saving locally</span></div></div></div>
+      <div class="actions"><button class="btn" id="loadBtn" type="button">Load copy</button><button class="btn" id="saveBtn" type="button">Save copy</button><button class="btn primary" id="printBtn" type="button">Print / PDF</button></div>
+      <input hidden id="fileInput" type="file" accept="application/json,.json">
+    </div>
+    <div class="progress"><div id="progressBar"></div></div>
+  </header>
+
+  <main class="container">
+    <section class="hero"><div class="eyebrow">Reliability Team</div><h1>Equipment Health Assessment Checklist</h1><p>Reliability screening form for laboratory, facilities, and process equipment</p></section>
+
+    <form id="assessmentForm">
+      <section class="card"><div class="section-head"><span class="section-no">01</span><div><h2>Equipment Information</h2><p>Identify the asset and assessment date.</p></div></div><div class="fields" id="metadataFields"></div></section>
+      <section class="card instructions"><span class="section-no">i</span><p><strong>Response convention:</strong> YES indicates that a potential reliability concern is present. NO indicates that the concern was not identified. N/A means the question does not apply; it must not be used when information is unavailable. Record supporting evidence for every YES response. A YES response is a screening trigger and does not, by itself, require replacement.</p></section>
+      <div id="questions"></div>
+      <section class="card"><div class="section-head"><span class="section-no">09</span><div><h2>Assessment Summary and Disposition</h2><p>Record the overall condition, risk, and recommended disposition.</p></div></div><div class="summary" id="summary"></div></section>
+      <aside class="note"><strong>Note:</strong> This checklist is a screening tool. Final disposition must consider equipment criticality, applicable quality requirements, risk controls, and qualified engineering judgment.</aside>
+      <div class="bottom no-print"><button class="btn danger" id="clearBtn" type="button">Clear form</button><div class="actions"><button class="btn" id="saveBottom" type="button">Save a copy</button><button class="btn primary" id="printBottom" type="button">Print / Save PDF</button></div></div>
+    </form>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY='equipment-health-assessment-v1';
+    const metadata=[['equipmentId','Equipment ID','text'],['equipmentDescription','Equipment Description','text'],['manufacturerModel','Manufacturer / Model','text'],['serialNumber','Serial Number','text'],['siteRoom','Site / Room','text'],['assessmentDate','Assessment Date','date']];
+    const sections=[
+      [2,'Current Performance and Compliance',["Has the equipment failed its most recent certification, qualification, calibration, or functional test?","Are any critical operating parameters currently outside their established acceptance limits?"]],
+      [3,'Reliability and Condition Trend',["Has the equipment experienced recurring failures or repeated corrective maintenance?","Is there evidence that failure frequency has increased over time?","Is there evidence of progressive degradation in critical performance parameters?"]],
+      [4,'Maintainability and Component Health',["Have significant adjustments or repairs been repeatedly required to maintain acceptable performance?","Has a critical component failed or shown deterioration during the recent operating history?"]],
+      [5,'Lifecycle, Obsolescence, and Configuration',["Are critical components approaching an advanced service age without evidence supporting their remaining condition?","Is the equipment approaching or beyond its expected useful life?","Are OEM parts, service, or technical support becoming difficult or impossible to obtain?","Have non-OEM modifications or configuration changes been identified that require verification?"]],
+      [6,'Operational and Business Continuity Risk',["Could a foreseeable equipment failure compromise product, personnel, environmental, or process protection?","Would failure of a critical component require the equipment to be removed from service for an extended period?","Is there no readily available backup equipment or alternative process if this asset fails?"]],
+      [7,'Records, Data Quality, and Maintenance Strategy',["Does the available maintenance and compliance history show unresolved issues, repeated alarms, NCRs, or deviations attributable to the equipment?","Is the available documentation insufficient to establish equipment age, maintenance history, or current condition?","Are there indications that preventive maintenance, certification, calibration, or condition-monitoring activities should be increased?"]],
+      [8,'Overall Replacement-Planning Trigger',["Based on the above answers, is there evidence that replacement planning should be initiated or elevated?"]]
+    ];
+    const conditions=['Good','Fair','Poor','Critical'];
+    const risks=['Low','Low-Moderate','Moderate','Moderate-High','High'];
+    const dispositions=['Continue in service under the existing maintenance strategy','Continue in service with increased monitoring or revised PM/certification scope','Initiate or elevate replacement planning','Remove from service pending technical or quality review'];
+    let timer;
+
+    function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+    function emptyState(){return{metadata:Object.fromEntries(metadata.map(x=>[x[0],'' ])),responses:Object.fromEntries(Array.from({length:18},(_,i)=>[i+1,{answer:'',comments:''}])),overallCondition:'',reliabilityRisk:'',dispositions:[]}}
+    function normalize(v={}){const b=emptyState();return{metadata:{...b.metadata,...(v.metadata||{})},responses:Object.fromEntries(Array.from({length:18},(_,i)=>{const n=i+1;return[n,{...b.responses[n],...(v.responses?.[n]||{})}]})),overallCondition:v.overallCondition||'',reliabilityRisk:v.reliabilityRisk||'',dispositions:Array.isArray(v.dispositions)?v.dispositions:[]}}
+    function getState(){const f=new FormData(document.getElementById('assessmentForm'));const s=emptyState();metadata.forEach(([k])=>s.metadata[k]=String(f.get('meta-'+k)||''));for(let n=1;n<=18;n++)s.responses[n]={answer:String(f.get('q'+n)||''),comments:String(f.get('comments'+n)||'')};s.overallCondition=String(f.get('overallCondition')||'');s.reliabilityRisk=String(f.get('reliabilityRisk')||'');s.dispositions=f.getAll('dispositions').map(String);return s}
+    function setState(s){s=normalize(s);metadata.forEach(([k])=>document.querySelector(`[name="meta-${k}"]`).value=s.metadata[k]);for(let n=1;n<=18;n++){const r=s.responses[n];if(r.answer){const el=document.querySelector(`[name="q${n}"][value="${r.answer}"]`);if(el)el.checked=true}document.querySelector(`[name="comments${n}"]`).value=r.comments}if(s.overallCondition){const el=document.querySelector(`[name="overallCondition"][value="${CSS.escape(s.overallCondition)}"]`);if(el)el.checked=true}if(s.reliabilityRisk){const el=document.querySelector(`[name="reliabilityRisk"][value="${CSS.escape(s.reliabilityRisk)}"]`);if(el)el.checked=true}document.querySelectorAll('[name="dispositions"]').forEach(el=>el.checked=s.dispositions.includes(el.value));updateProgress()}
+    function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2600)}
+    function updateProgress(){const count=document.querySelectorAll('input[type="radio"][name^="q"]:checked').length;document.getElementById('answered').textContent=count;document.getElementById('progressBar').style.width=Math.round(count/18*100)+'%'}
+    function autosave(){clearTimeout(timer);timer=setTimeout(()=>{localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));document.getElementById('saveStatus').textContent='Saved '+new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit'}).format(new Date())},300);updateProgress()}
+    function download(){const s=getState();const id=s.metadata.equipmentId.trim()||'equipment';const blob=new Blob([JSON.stringify({formType:'equipment-health-assessment',version:1,savedAt:new Date().toISOString(),data:s},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=id+'-health-assessment.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Assessment copy downloaded.')}
+
+    document.getElementById('metadataFields').innerHTML=metadata.map(([k,l,t])=>`<div class="field"><label for="meta-${k}">${esc(l)}</label><input id="meta-${k}" name="meta-${k}" type="${t}" autocomplete="off"></div>`).join('');
+    let q=0;document.getElementById('questions').innerHTML=sections.map(([num,title,items])=>`<section class="card"><div class="section-head"><span class="section-no">${String(num).padStart(2,'0')}</span><div><h2>${esc(title)}</h2><p>${items.length} screening question${items.length===1?'':'s'}</p></div></div>${items.map(question=>{q++;const n=q;return`<div class="question"><div class="q-title"><span class="q-no">${n}.</span><span>${esc(question)}</span></div><div class="response"><div class="choices" role="radiogroup" aria-label="Question ${n}">${['yes','no','na'].map(v=>`<label class="choice"><input type="radio" name="q${n}" value="${v}"><span>${v==='na'?'N/A':v.toUpperCase()}</span></label>`).join('')}</div><div class="comments"><label for="comments${n}">Comments / supporting evidence</label><textarea id="comments${n}" name="comments${n}"></textarea></div></div></div>`}).join('')}</section>`).join('');
+    function radios(name,label,items){return`<fieldset><legend>${esc(label)}</legend><div class="tiles">${items.map(v=>`<label class="choice"><input type="radio" name="${name}" value="${esc(v)}"><span>${esc(v)}</span></label>`).join('')}</div></fieldset>`}
+    document.getElementById('summary').innerHTML=radios('overallCondition','Overall Condition',conditions)+radios('reliabilityRisk','Reliability Risk',risks)+`<fieldset><legend>Recommended disposition <span style="font-weight:400;color:var(--muted)">(select all that apply)</span></legend><div class="check-list">${dispositions.map(v=>`<label class="check-item"><input type="checkbox" name="dispositions" value="${esc(v)}"><span>${esc(v)}</span></label>`).join('')}</div></fieldset>`;
+
+    document.getElementById('assessmentForm').addEventListener('input',autosave);document.getElementById('assessmentForm').addEventListener('change',autosave);
+    document.getElementById('saveBtn').onclick=document.getElementById('saveBottom').onclick=download;
+    document.getElementById('printBtn').onclick=document.getElementById('printBottom').onclick=()=>window.print();
+    document.getElementById('loadBtn').onclick=()=>document.getElementById('fileInput').click();
+    document.getElementById('fileInput').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const p=JSON.parse(await file.text());if(p.formType!=='equipment-health-assessment'||!p.data)throw 0;document.getElementById('assessmentForm').reset();setState(p.data);autosave();toast('Saved assessment loaded.')}catch{toast('Select a valid equipment health assessment file.')}};
+    document.getElementById('clearBtn').onclick=()=>{if(confirm('Clear all equipment details, answers and comments saved on this device?')){document.getElementById('assessmentForm').reset();localStorage.removeItem(STORAGE_KEY);document.getElementById('saveStatus').textContent='Saving locally';updateProgress();toast('Assessment cleared.')}};
+    try{const stored=localStorage.getItem(STORAGE_KEY);if(stored)setState(JSON.parse(stored))}catch{toast('The saved draft could not be loaded.')}updateProgress();
+  </script>
+</body>
+</html>
